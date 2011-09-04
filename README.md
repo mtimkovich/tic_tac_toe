@@ -8,7 +8,7 @@ able to draw with even the best players in the world.
 Moving
 ------
 
-Moving is inputted in the form:
+Moves are inputted in the form:
 
     Move: x y
 
