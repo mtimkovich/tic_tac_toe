@@ -1,5 +1,11 @@
 #!/usr/bin/ruby
 
+def get_move
+  print "Move: "
+  gets.chomp.split.map! { |s| s.to_i }
+  puts
+end
+
 class Board
   def initialize
     @board = Array.new(3) { Array.new(3) {0} }
@@ -18,6 +24,9 @@ class Board
 
         if x == 2
           puts
+          if y < 2
+            puts "-+-+-"
+          end
         else
           print '|'
         end
@@ -25,7 +34,10 @@ class Board
     end
   end
 
-  def set_cell(x, y, value)
+  def set_cell(coor, value)
+    x = coor[0]
+    y = coor[1]
+
     @board[y][x] = value
   end
 end
@@ -34,5 +46,10 @@ board = Board.new
 board.draw_board
 puts
 
-board.set_cell(1, 1, 1)
+print "Move: "
+input = gets.chomp.split.map! { |s| s.to_i }
+puts
+
+board.set_cell(input, 1)
 board.draw_board
+
