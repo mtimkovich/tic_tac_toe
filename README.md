@@ -8,7 +8,7 @@ able to draw with even the best players in the world.
 Moving
 ------
 
-Moving is inputed in the form:
+Moving is inputted in the form:
 
     Move: x y
 
@@ -26,7 +26,7 @@ To exit, type:
     
     Move: exit
     
-    or
+or
 
     Move: quit
 
