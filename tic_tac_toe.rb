@@ -3,12 +3,23 @@
 def get_user_move
   print "Move: "
   input_string = gets.chomp
+  input_array = []
 
-  if input_string =~ /[0-9]\s+[0-9]/
-    return input_string.split.map! { |s| s.to_i }
+  if input_string =~ /^[0-9]\s+[0-9]$/
+    input_array = input_string.split.map! { |s| s.to_i }
+  elsif input_string == "exit" or input_string == "quit"
+    exit
   else
     return nil
   end
+
+  (0..1).each do |i|
+    if input_array[i] > 2
+      return nil
+    end
+  end
+
+  return input_array
 end
 
 class Board
@@ -69,6 +80,8 @@ while true
     board.set_cell(input, 1)
 
 #     user_move = false
+  else
+    # AI move will go here
   end
 end
 
