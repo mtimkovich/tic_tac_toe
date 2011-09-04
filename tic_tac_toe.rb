@@ -1,9 +1,14 @@
 #!/usr/bin/ruby
 
-def get_move
+def get_user_move
   print "Move: "
-  gets.chomp.split.map! { |s| s.to_i }
-  puts
+  input_string = gets.chomp
+
+  if input_string =~ /[0-9]\s+[0-9]/
+    return input_string.split.map! { |s| s.to_i }
+  else
+    return nil
+  end
 end
 
 class Board
@@ -14,11 +19,13 @@ class Board
   def draw_board
     (0...@board.length).each do |y|
       (0...@board[y].length).each do |x|
-        if @board[y][x] == 0
+
+        case @board[y][x]
+        when 0
           print ' '
-        elsif @board[y][x] == 1
+        when 1
           print 'x'
-        else @board[y][x] == 2
+        when 2
           print 'o'
         end
 
@@ -43,13 +50,25 @@ class Board
 end
 
 board = Board.new
-board.draw_board
-puts
+user_move = true
 
-print "Move: "
-input = gets.chomp.split.map! { |s| s.to_i }
-puts
+while true
+  board.draw_board
+  puts
 
-board.set_cell(input, 1)
-board.draw_board
+  if user_move
+    input = get_user_move
+    puts
+
+    if input.nil?
+      puts "Invalid user input"
+      puts
+      next
+    end
+
+    board.set_cell(input, 1)
+
+#     user_move = false
+  end
+end
 
