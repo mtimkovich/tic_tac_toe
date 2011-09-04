@@ -5,6 +5,8 @@ def get_user_move
   input_string = gets.chomp
   input_array = []
 
+  puts
+
   if input_string =~ /^[0-9]\s+[0-9]$/
     input_array = input_string.split.map! { |s| s.to_i }
   elsif input_string == "exit" or input_string == "quit"
@@ -40,13 +42,13 @@ class Board
           print 'o'
         end
 
-        if x == 2
+        if x < 2
+          print '|'
+        else
           puts
           if y < 2
             puts "-+-+-"
           end
-        else
-          print '|'
         end
       end
     end
@@ -69,7 +71,6 @@ while true
 
   if user_move
     input = get_user_move
-    puts
 
     if input.nil?
       puts "Invalid user input"
