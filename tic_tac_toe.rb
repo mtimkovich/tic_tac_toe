@@ -21,6 +21,9 @@ def invalid_input
   puts
 end
 
+class AI
+end
+
 class Board
   def initialize
     @board = Array.new(3) { Array.new(3) {0} }
@@ -69,6 +72,7 @@ class Board
 end
 
 board = Board.new
+hal = AI.new
 
 user_move = true
 
