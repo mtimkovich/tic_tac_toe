@@ -7,13 +7,21 @@ def get_user_move
   puts
 
   # Check that the input is in the form [number] [number]
-  if input_string =~ /^[0-2]\s+[0-2]$/
-    return input_string.split.map! { |s| s.to_i }
+  if input_string =~ /^\s*[0-2]\s+[0-2]\s*$/
+    return input_string.split.map { |s| s.to_i }
   elsif input_string == "exit" or input_string == "quit"
     exit
   else
     return nil
   end
+end
+
+def invalid_input
+  puts "Invalid user input"
+  puts
+end
+
+class AI
 end
 
 class Board
@@ -50,11 +58,18 @@ class Board
     x = coor[0]
     y = coor[1]
 
-    @board[y][x] = value
+    if @board[y][x] == 0
+      @board[y][x] = value
+      return 0
+    else
+      return 1
+    end
   end
 end
 
 board = Board.new
+hal = AI.new
+
 user_move = true
 
 while true
@@ -65,12 +80,16 @@ while true
     input = get_user_move
 
     if input.nil?
-      puts "Invalid user input"
-      puts
+      invalid_input
       next
     end
 
-    board.set_cell(input, 1)
+    error = board.set_cell(input, 1)
+
+    if error == 1
+      invalid_input
+      next
+    end
 
 #     user_move = false
   else
