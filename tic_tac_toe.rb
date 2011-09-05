@@ -8,11 +8,11 @@ def get_user_move
 
   # Check that the input is in the form [number] [number]
   if input_string =~ /^\s*[0-2]\s+[0-2]\s*$/
-    return input_string.split.map { |s| s.to_i }
+    input_string.split.map { |s| s.to_i }
   elsif input_string == "exit" or input_string == "quit"
     exit
   else
-    return nil
+    nil
   end
 end
 
@@ -30,8 +30,8 @@ class Board
   end
 
   def draw_board
-    (0...@board.length).each do |y|
-      (0...@board[y].length).each do |x|
+    @board.each_index do |y|
+      @board[y].each_index do |x|
 
         case @board[y][x]
         when 0
@@ -54,15 +54,19 @@ class Board
     end
   end
 
+  def get_cell(coor)
+    x, y = coor[0..1]
+
+    @board[y][x]
+  end
+
   def set_cell(coor, value)
-    x = coor[0]
-    y = coor[1]
+    x, y = coor[0..1]
 
     if @board[y][x] == 0
       @board[y][x] = value
-      return 0
     else
-      return 1
+      nil
     end
   end
 end
@@ -84,9 +88,9 @@ while true
       next
     end
 
-    error = board.set_cell(input, 1)
+    r = board.set_cell(input, 1)
 
-    if error == 1
+    if r.nil? 
       invalid_input
       next
     end
