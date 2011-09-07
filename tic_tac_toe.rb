@@ -5,21 +5,12 @@ def invalid_input
   puts
 end
 
-class AI
-  def get_move
-  end
-end
-
-class User
+class Player
   @@symbol = 1
 
   def initialize(n)
     @name = n
-
-    # @symbol is unique to the player
-    # @@symbol is static, and incriments every time a user is created
     @symbol = @@symbol
-
     @@symbol += 1
   end
 
@@ -27,6 +18,22 @@ class User
     @symbol
   end
 
+end
+
+class AI < Player
+  def get_move
+    move = [0, 0]
+
+    puts @name
+    puts "Move: #{move.join(" ")}"
+    puts
+
+    move
+  end
+
+end
+
+class User < Player
   def get_move
     puts @name
     print "Move: "
@@ -94,7 +101,7 @@ end
 
 board = Board.new
 
-num_users = 2
+num_users = 1
 
 players = []
 
