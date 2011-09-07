@@ -1,27 +1,48 @@
 #!/usr/bin/ruby
 
-def get_user_move
-  print "Move: "
-  input_string = gets.chomp
-
-  puts
-
-  # Check that the input is in the form [number] [number]
-  if input_string =~ /^\s*[0-2]\s+[0-2]\s*$/
-    input_string.split.map { |s| s.to_i }
-  elsif input_string == "exit" or input_string == "quit"
-    exit
-  else
-    nil
-  end
-end
-
 def invalid_input
   puts "Invalid user input"
   puts
 end
 
 class AI
+  def get_move
+  end
+end
+
+class User
+  @@symbol = 1
+
+  def initialize(n)
+    @name = n
+
+    # @symbol is unique to the player
+    # @@symbol is static, and incriments every time a user is created
+    @symbol = @@symbol
+
+    @@symbol += 1
+  end
+
+  def get_symbol
+    @symbol
+  end
+
+  def get_move
+    puts @name
+    print "Move: "
+    input_string = gets.chomp
+
+    puts
+
+    # Check that the input is in the form [number] [number]
+    if input_string =~ /^\s*[0-2]\s+[0-2]\s*$/
+      input_string.split.map { |s| s.to_i }
+    elsif input_string == "exit" or input_string == "quit"
+      exit
+    else
+      nil
+    end
+  end
 end
 
 class Board
@@ -72,32 +93,42 @@ class Board
 end
 
 board = Board.new
-hal = AI.new
 
-user_move = true
+num_users = 2
 
-while true
+players = []
+
+if num_users == 1
+  players[0] = User.new("Player 1")
+  players[1] = AI.new("CPU")
+elsif num_users == 2
+  players[0] = User.new("Player 1")
+  players[1] = User.new("Player 2")
+end
+
+game_over = false
+e = players.cycle
+
+while not game_over
   board.draw_board
   puts
 
-  if user_move
-    input = get_user_move
+  player = e.peek
 
-    if input.nil?
-      invalid_input
-      next
-    end
+  input = player.get_move
 
-    r = board.set_cell(input, 1)
-
-    if r.nil? 
-      invalid_input
-      next
-    end
-
-#     user_move = false
-  else
-    # AI move will go here
+  if input.nil?
+    invalid_input
+    next
   end
+
+  r = board.set_cell(input, player.get_symbol)
+
+  if r.nil? 
+    invalid_input
+    next
+  end
+
+  e.next
 end
 
