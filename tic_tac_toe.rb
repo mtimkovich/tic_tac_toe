@@ -1,10 +1,5 @@
 #!/usr/bin/ruby
 
-def invalid_input
-  puts "Invalid user input"
-  puts
-end
-
 class Player
   @@symbol = 1
 
@@ -14,21 +9,24 @@ class Player
     @@symbol += 1
   end
 
-  def get_symbol
+  def name
+    @name
+  end
+
+  def symbol
     @symbol
+  end
+
+  def invalid_input
+    puts "Invalid user input"
+    puts
   end
 
 end
 
 class AI < Player
   def get_move
-    move = [0, 0]
-
-    puts @name
-    puts "Move: #{move.join(" ")}"
-    puts
-
-    move
+    [0, 0]
   end
 
 end
@@ -101,7 +99,9 @@ end
 
 board = Board.new
 
-num_users = 1
+
+print "How many players? "
+num_users = gets.chomp.to_i
 
 players = []
 
@@ -117,22 +117,24 @@ game_over = false
 e = players.cycle
 
 while not game_over
-  board.draw_board
-  puts
-
   player = e.peek
+
+  unless player.name == "CPU"
+    board.draw_board
+    puts
+  end
 
   input = player.get_move
 
   if input.nil?
-    invalid_input
+    player.invalid_input
     next
   end
 
-  r = board.set_cell(input, player.get_symbol)
+  r = board.set_cell(input, player.symbol)
 
   if r.nil? 
-    invalid_input
+    player.invalid_input
     next
   end
 
