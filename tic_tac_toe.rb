@@ -91,11 +91,25 @@ class Board
   end
 
   def game_status
+    columns = []
+
     @board.each_index do |y|
+      # Check for 3 in a row in rows
       (1..2).each do |i|
         if @board[y].count(i) == 3
           return true
         end
+      end
+
+      @board[y].each_index do |x|
+        columns.push(@board[y][x])
+      end
+    end
+
+    # Check for 3 in a row in columns
+    (1..2).each do |i|
+      if columns.count(i) == 3
+        return true
       end
     end
 
