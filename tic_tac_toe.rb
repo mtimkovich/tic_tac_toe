@@ -8,6 +8,7 @@ class Player
   def initialize(n)
     @name = n
     @symbol = @@symbol
+
     @@symbol += 1
   end
 
@@ -88,12 +89,26 @@ class Board
       nil
     end
   end
+
+  def game_status
+    @board.each_index do |y|
+      (1..2).each do |i|
+        if @board[y].count(i) == 3
+          return true
+        end
+      end
+    end
+
+    return false
+  end
+
 end
 
 board = Board.new
 
-print "How many players? "
-num_users = gets.chomp
+# print "How many players? "
+# num_users = gets.chomp
+num_users = "2"
 
 players = []
 
@@ -134,6 +149,12 @@ while not game_over
     next
   end
 
+  game_over = board.game_status
+
   e.next
 end
+
+board.draw_board
+puts
+puts "GAME OVER"
 
