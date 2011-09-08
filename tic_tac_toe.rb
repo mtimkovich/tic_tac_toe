@@ -1,20 +1,14 @@
 #!/usr/bin/ruby
 
 class Player
+  attr_accessor :name, :symbol
+
   @@symbol = 1
 
   def initialize(n)
     @name = n
     @symbol = @@symbol
     @@symbol += 1
-  end
-
-  def name
-    @name
-  end
-
-  def symbol
-    @symbol
   end
 
   def invalid_input
@@ -33,8 +27,7 @@ end
 
 class User < Player
   def get_move
-    puts @name
-    print "Move: "
+    print "#{@name}: "
     input_string = gets.chomp
 
     puts
@@ -99,18 +92,21 @@ end
 
 board = Board.new
 
-
 print "How many players? "
-num_users = gets.chomp.to_i
+num_users = gets.chomp
 
 players = []
 
-if num_users == 1
+case num_users
+when "1"
   players[0] = User.new("Player 1")
   players[1] = AI.new("CPU")
-elsif num_users == 2
+when "2"
   players[0] = User.new("Player 1")
   players[1] = User.new("Player 2")
+else
+  puts "Invalid number of users"
+  exit
 end
 
 game_over = false
