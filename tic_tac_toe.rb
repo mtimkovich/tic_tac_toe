@@ -35,11 +35,11 @@ class User < Player
 
     # Check that the input is in the form [number] [number]
     if input_string =~ /^\s*[0-2]\s+[0-2]\s*$/
-      return input_string.split.map { |s| s.to_i }
+      input_string.split.map { |s| s.to_i }
     elsif input_string == "exit" or input_string == "quit"
       exit
     else
-      return nil
+      nil
     end
   end
 end
@@ -149,7 +149,7 @@ class Board
       return 0
     end
 
-    return false
+    false
   end
 
 end

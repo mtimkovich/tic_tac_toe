@@ -1,7 +1,7 @@
 Tic Tac Toe
 ===========
 
-**UPDATE**
+**UPDATE:**
 2 player is now completely functional!
 Now I can begin work on the AI.
 
