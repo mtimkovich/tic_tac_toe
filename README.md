@@ -1,6 +1,10 @@
 Tic Tac Toe
 ===========
 
+**UPDATE**
+2 player is now completely functional!
+Now I can begin work on the AI.
+
 I'm working on creating a Tic Tac Toe game with an AI. Currently a work in
 progress, and the AI has not been coded yet. When completed, I hope it will be
 able to draw with even the best players in the world.
