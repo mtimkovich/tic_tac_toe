@@ -35,11 +35,11 @@ class User < Player
 
     # Check that the input is in the form [number] [number]
     if input_string =~ /^\s*[0-2]\s+[0-2]\s*$/
-      input_string.split.map { |s| s.to_i }
+      return input_string.split.map { |s| s.to_i }
     elsif input_string == "exit" or input_string == "quit"
       exit
     else
-      nil
+      return nil
     end
   end
 end
@@ -137,6 +137,7 @@ class Board
     end
 
     # Check for a draw
+    # A draw is when there are no 0s left on the board
     zeros = 0
     @board.each_index do |y|
       if @board[y].count(0) == 0
@@ -198,6 +199,9 @@ while not game_over
     next
   end
 
+  # Check if the game is over
+  # game_over contains the winning players symbol
+  # on draw, it contains 0
   game_over = board.game_status
 
   e.next
