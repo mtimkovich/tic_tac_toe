@@ -75,13 +75,13 @@ class Board
   end
 
   def get_cell(coor)
-    x, y = coor[0..1]
+    x, y = coor.drop(0) 
 
     @board[y][x]
   end
 
   def set_cell(coor, value)
-    x, y = coor[0..1]
+    x, y = coor.drop(0)
 
     if @board[y][x] == 0
       @board[y][x] = value
