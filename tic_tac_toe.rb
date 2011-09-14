@@ -200,7 +200,7 @@ while not game_over
   end
 
   # Check if the game is over
-  # game_over contains the winning players symbol
+  # game_over contains the winning player's symbol
   # on draw, it contains 0
   game_over = board.game_status
 
