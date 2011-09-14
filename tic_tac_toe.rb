@@ -95,7 +95,7 @@ class Board
     @board.each_index do |y|
       (1..2).each do |i|
         if @board[y].count(i) == 3
-          return true
+          return i
         end
       end
     end
@@ -108,7 +108,7 @@ class Board
       end
       (1..2).each do |i|
         if column.count(i) == 3
-          return true
+          return i
         end
       end
     end
@@ -131,9 +131,21 @@ class Board
 
       (1..2).each do |i|
         if diagonal.count(i) == 3
-          return true
+          return i
         end
       end
+    end
+
+    # Check for a draw
+    zeros = 0
+    @board.each_index do |y|
+      if @board[y].count(0) == 0
+        zeros += 1
+      end
+    end
+
+    if zeros == 3
+      return 0
     end
 
     return false
@@ -193,5 +205,16 @@ end
 
 board.draw_board
 puts
+
+if game_over == 0
+  puts "DRAW"
+else
+  players.each do |player|
+    if player.symbol == game_over
+      puts "#{player.name.upcase} WINS"
+    end
+  end
+end
+
 puts "GAME OVER"
 
