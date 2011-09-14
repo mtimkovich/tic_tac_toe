@@ -137,7 +137,6 @@ class Board
     end
 
     # Check for a draw
-    # A draw is when there are no 0s left on the board
     zeros = 0
     @board.each_index do |y|
       if @board[y].count(0) == 0
@@ -199,10 +198,6 @@ while not game_over
     next
   end
 
-  # Check if the game is over
-  # game_over is the winning player's symbol on win
-  # In case of a draw, 0 is returned
-  # Otherwise, false is returned
   game_over = board.game_status
 
   e.next
