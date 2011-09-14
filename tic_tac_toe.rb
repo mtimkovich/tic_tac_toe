@@ -101,17 +101,10 @@ class Board
     end
 
     # Check for 3 in a row in columns
-    (0..2).each do |r|
-      n = 0
+    @board[0].each_index do |x|
       columns = []
       @board.each_index do |y|
-        @board[y].each_index do |x|
-          # A "column" is defined through this logic
-          if n % @board.length == r
-            columns.push(@board[y][x])
-          end
-          n += 1
-        end
+        columns.push(@board[y][x])
       end
       (1..2).each do |i|
         if columns.count(i) == 3
