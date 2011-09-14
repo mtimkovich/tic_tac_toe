@@ -102,12 +102,35 @@ class Board
 
     # Check for 3 in a row in columns
     @board[0].each_index do |x|
-      columns = []
+      column = []
       @board.each_index do |y|
-        columns.push(@board[y][x])
+        column.push(@board[y][x])
       end
       (1..2).each do |i|
-        if columns.count(i) == 3
+        if column.count(i) == 3
+          return true
+        end
+      end
+    end
+
+    # Check diagonals for 3 in a row
+    [0, 2].each do |r|
+      x = r
+      y = 0
+      diagonal = []
+      3.times do
+        diagonal.push(@board[y][x])
+        if r == 0
+          x += 1
+        else
+          x -= 1
+        end
+
+        y += 1
+      end
+
+      (1..2).each do |i|
+        if diagonal.count(i) == 3
           return true
         end
       end
