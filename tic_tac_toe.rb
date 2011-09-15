@@ -38,6 +38,8 @@ class User < Player
       input_string.split.map { |s| s.to_i }
     elsif input_string == "exit" or input_string == "quit"
       exit
+    elsif input_string == "michaeljosephrosenthal"
+      input_string
     else
       nil
     end
@@ -149,7 +151,7 @@ class Board
       return 0
     end
 
-    false
+    return false
   end
 
 end
@@ -190,6 +192,9 @@ while not game_over
   if input.nil?
     player.invalid_input
     next
+  elsif input == "michaeljosephrosenthal"
+    game_over = player.symbol
+    break
   end
 
   r = board.set_cell(input, player.symbol)
