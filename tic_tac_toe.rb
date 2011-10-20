@@ -20,10 +20,66 @@ class Player
 end
 
 class AI < Player
-  def get_move
-    [0, 0]
+  def initialize(n, board)
+    @name = n
+    @symbol = @@symbol
+    @board = board
+
+    @@symbol += 1
+
+    if @symbol == 1
+      @other_symbol = 2
+    else
+      @other_symbol = 1
+    end
   end
 
+  def get_move
+    # Check for 2 in a row in rows
+    @board.each_index do |y|
+      if @board[y].count(@other_symbol) == 2 and @board[y].count(0) == 1
+        return [@board[y].index(0), y]
+      end
+    end
+
+    # Check for 2 in a row in columns
+    @board[0].each_index do |x|
+      column = []
+      @board.each_index do |y|
+        column.push(@board[y][x])
+      end
+
+      if column.count(@other_symbol) == 2 and column.count(0) == 1
+        return [x, column.index(0)]
+      end
+    end
+
+
+    # Check diagonals for 3 in a row
+    [0, 2].each do |r|
+      x = r
+      y = 0
+      diagonal = []
+      3.times do
+        diagonal.push(@board[y][x])
+        if r == 0
+          x += 1
+        else
+          x -= 1
+        end
+
+        y += 1
+      end
+
+      if diagonal.count(@other_symbol) == 2 and diagonal.count(0) == 1
+        i = diagonal.index(0)
+
+        return [(r-i).abs, i]
+      end
+    end
+
+    return nil
+  end
 end
 
 class User < Player
@@ -45,6 +101,8 @@ class User < Player
 end
 
 class Board
+  attr_accessor :board
+
   def initialize
     @board = Array.new(3) { Array.new(3) {0} }
   end
@@ -158,14 +216,14 @@ board = Board.new
 
 # print "How many players? "
 # num_users = gets.chomp
-num_users = "2"
+num_users = "1"
 
 players = []
 
 case num_users
 when "1"
   players[0] = User.new("Player 1")
-  players[1] = AI.new("CPU")
+  players[1] = AI.new("CPU", board.board)
 when "2"
   players[0] = User.new("Player 1")
   players[1] = User.new("Player 2")
@@ -188,14 +246,17 @@ while not game_over
   input = player.get_move
 
   if input.nil?
-    player.invalid_input
+    puts "Invalid move"
+    puts
+    e.next
     next
   end
 
   r = board.set_cell(input, player.symbol)
 
   if r.nil? 
-    player.invalid_input
+    puts "Could not set cell"
+    puts
     next
   end
 
