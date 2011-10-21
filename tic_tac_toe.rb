@@ -5,27 +5,15 @@ class Player
 
   @@symbol = 1
 
-  def initialize(n)
-    @name = n
-    @symbol = @@symbol
-
-    @@symbol += 1
-  end
-
-  def invalid_input
-    puts "Invalid user input"
-    puts
-  end
-
-end
-
-class AI < Player
   def initialize(n, board)
     @name = n
     @symbol = @@symbol
-    @board = board
 
     @@symbol += 1
+
+    if not board.nil?
+      @board = board
+    end
 
     if @symbol == 1
       @other_symbol = 2
@@ -34,11 +22,21 @@ class AI < Player
     end
   end
 
+  def invalid_input(msg)
+    puts msg
+    puts
+  end
+
+end
+
+class AI < Player
   def get_move
     # Check for 2 in a row in rows
     @board.each_index do |y|
-      if @board[y].count(@other_symbol) == 2 and @board[y].count(0) == 1
-        return [@board[y].index(0), y]
+      [@symbol, @other_symbol].each do |s|
+        if @board[y].count(s) == 2 and @board[y].count(0) == 1
+          return [@board[y].index(0), y]
+        end
       end
     end
 
@@ -49,13 +47,14 @@ class AI < Player
         column.push(@board[y][x])
       end
 
-      if column.count(@other_symbol) == 2 and column.count(0) == 1
-        return [x, column.index(0)]
+      [@symbol, @other_symbol].each do |s|
+        if column.count(s) == 2 and column.count(0) == 1
+          return [x, column.index(0)]
+        end
       end
     end
 
-
-    # Check diagonals for 3 in a row
+    # Check diagonals for 2 in a row
     [0, 2].each do |r|
       x = r
       y = 0
@@ -71,10 +70,12 @@ class AI < Player
         y += 1
       end
 
-      if diagonal.count(@other_symbol) == 2 and diagonal.count(0) == 1
-        i = diagonal.index(0)
+      [@symbol, @other_symbol].each do |s|
+        if diagonal.count(s) == 2 and diagonal.count(0) == 1
+          i = diagonal.index(0)
 
-        return [(r-i).abs, i]
+          return [(r-i).abs, i]
+        end
       end
     end
 
@@ -222,11 +223,11 @@ players = []
 
 case num_users
 when "1"
-  players[0] = User.new("Player 1")
+  players[0] = User.new("Player 1", nil)
   players[1] = AI.new("CPU", board.board)
 when "2"
-  players[0] = User.new("Player 1")
-  players[1] = User.new("Player 2")
+  players[0] = User.new("Player 1", nil)
+  players[1] = User.new("Player 2", nil)
 else
   puts "Invalid number of users"
   exit
@@ -246,8 +247,7 @@ while not game_over
   input = player.get_move
 
   if input.nil?
-    puts "Invalid move"
-    puts
+    player.invalid_input "Invalid move"
     e.next
     next
   end
@@ -255,8 +255,7 @@ while not game_over
   r = board.set_cell(input, player.symbol)
 
   if r.nil? 
-    puts "Could not set cell"
-    puts
+    player.invalid_input "Could not set cell"
     next
   end
 
