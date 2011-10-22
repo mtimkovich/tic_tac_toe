@@ -207,6 +207,10 @@ class Board
 
     return false
   end
+
+  def reset
+    @board = Array.new(3) { Array.new(3) {0} }
+  end
 end
 
 board = Board.new
@@ -232,49 +236,70 @@ end
 game_over = false
 e = players.cycle
 
-while not game_over
-  player = e.peek
+while true
+  while not game_over
+    player = e.peek
 
-  unless player.name == "CPU"
-    board.draw_board
-    puts
-  end
+    unless player.name == "CPU"
+      board.draw_board
+      puts
+    end
 
-  input = player.get_move
+    input = player.get_move
 
-  if input.nil?
-    player.invalid_input "Invalid move"
+    if input.nil?
+      player.invalid_input "Invalid move"
+
+      if player.name == "CPU"
+        e.next
+      end
+
+      next
+    end
+
+    r = board.set_cell(input, player.symbol)
+
+    if r.nil? 
+      player.invalid_input "Could not set cell"
+      next
+    end
+
+    # Check if the game is over
+    # game_over contains the winning players symbol
+    # on draw, it contains 0
+    game_over = board.game_status
+
     e.next
-    next
   end
 
-  r = board.set_cell(input, player.symbol)
+  board.draw_board
+  puts
 
-  if r.nil? 
-    player.invalid_input "Could not set cell"
-    next
-  end
-
-  # Check if the game is over
-  # game_over contains the winning players symbol
-  # on draw, it contains 0
-  game_over = board.game_status
-
-  e.next
-end
-
-board.draw_board
-puts
-
-if game_over == 0
-  puts "DRAW"
-else
-  players.each do |player|
-    if player.symbol == game_over
-      puts "#{player.name.upcase} WINS"
+  if game_over == 0
+    puts "DRAW"
+  else
+    players.each do |player|
+      if player.symbol == game_over
+        puts "#{player.name.upcase} WINS"
+      end
     end
   end
-end
 
-puts "GAME OVER"
+  puts "GAME OVER"
+  puts
+
+  print "Play again? [Y/n] "
+
+  case gets.chomp.downcase
+  when "y"
+    board.reset
+    game_over = false
+    e = players.cycle
+    players[1] = AI.new("CPU", board.board)
+  when "n"
+    break
+  end
+
+  puts
+end
 
