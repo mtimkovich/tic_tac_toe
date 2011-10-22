@@ -31,46 +31,43 @@ end
 
 class AI < Player
   def get_move
-    # Check for 2 in a row in rows
-    @board.each_index do |y|
-      [@symbol, @other_symbol].each do |s|
+    # Start with @symbol to the CPU plays a winning move over a defensive one
+    [@symbol, @other_symbol].each do |s|
+      # Check for 2 in a row in rows
+      @board.each_index do |y|
         if @board[y].count(s) == 2 and @board[y].count(0) == 1
           return [@board[y].index(0), y]
         end
       end
-    end
 
-    # Check for 2 in a row in columns
-    @board[0].each_index do |x|
-      column = []
-      @board.each_index do |y|
-        column.push(@board[y][x])
-      end
+      # Check for 2 in a row in columns
+      @board[0].each_index do |x|
+        column = []
+        @board.each_index do |y|
+          column.push(@board[y][x])
+        end
 
-      [@symbol, @other_symbol].each do |s|
         if column.count(s) == 2 and column.count(0) == 1
           return [x, column.index(0)]
         end
       end
-    end
 
-    # Check diagonals for 2 in a row
-    [0, 2].each do |r|
-      x = r
-      y = 0
-      diagonal = []
-      3.times do
-        diagonal.push(@board[y][x])
-        if r == 0
-          x += 1
-        else
-          x -= 1
+      # Check diagonals for 2 in a row
+      [0, 2].each do |r|
+        x = r
+        y = 0
+        diagonal = []
+        3.times do
+          diagonal.push(@board[y][x])
+          if r == 0
+            x += 1
+          else
+            x -= 1
+          end
+
+          y += 1
         end
 
-        y += 1
-      end
-
-      [@symbol, @other_symbol].each do |s|
         if diagonal.count(s) == 2 and diagonal.count(0) == 1
           i = diagonal.index(0)
 
@@ -210,7 +207,6 @@ class Board
 
     return false
   end
-
 end
 
 board = Board.new
