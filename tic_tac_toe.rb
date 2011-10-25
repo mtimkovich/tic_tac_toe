@@ -26,7 +26,6 @@ class Player
     puts msg
     puts
   end
-
 end
 
 class AI < Player
@@ -78,6 +77,10 @@ class AI < Player
 
     return nil
   end
+
+  def reset(board)
+    @board = board
+  end
 end
 
 class User < Player
@@ -128,6 +131,7 @@ class Board
         end
       end
     end
+    puts
   end
 
   def get_cell(coor)
@@ -147,45 +151,41 @@ class Board
   end
 
   def game_status
-    # Check for 3 in a row in rows
-    @board.each_index do |y|
-      (1..2).each do |i|
+    (1..2).each do |i|
+      # Check for 3 in a row in rows
+      @board.each_index do |y|
         if @board[y].count(i) == 3
           return i
         end
       end
-    end
 
-    # Check for 3 in a row in columns
-    @board[0].each_index do |x|
-      column = []
-      @board.each_index do |y|
-        column.push(@board[y][x])
-      end
-      (1..2).each do |i|
+      # Check for 3 in a row in columns
+      @board[0].each_index do |x|
+        column = []
+        @board.each_index do |y|
+          column.push(@board[y][x])
+        end
         if column.count(i) == 3
           return i
         end
       end
-    end
 
-    # Check diagonals for 3 in a row
-    [0, 2].each do |r|
-      x = r
-      y = 0
-      diagonal = []
-      3.times do
-        diagonal.push(@board[y][x])
-        if r == 0
-          x += 1
-        else
-          x -= 1
+      # Check diagonals for 3 in a row
+      [0, 2].each do |r|
+        x = r
+        y = 0
+        diagonal = []
+        3.times do
+          diagonal.push(@board[y][x])
+          if r == 0
+            x += 1
+          else
+            x -= 1
+          end
+
+          y += 1
         end
 
-        y += 1
-      end
-
-      (1..2).each do |i|
         if diagonal.count(i) == 3
           return i
         end
@@ -242,7 +242,6 @@ while true
 
     unless player.name == "CPU"
       board.draw_board
-      puts
     end
 
     input = player.get_move
@@ -273,7 +272,6 @@ while true
   end
 
   board.draw_board
-  puts
 
   if game_over == 0
     puts "DRAW"
@@ -295,7 +293,9 @@ while true
     board.reset
     game_over = false
     e = players.cycle
-    players[1] = AI.new("CPU", board.board)
+    if num_users == "1"
+      players[1].reset(board.board)
+    end
   when "n"
     break
   end
