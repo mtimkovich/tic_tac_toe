@@ -30,7 +30,17 @@ end
 
 class AI < Player
   def get_move
-    # Start with @symbol to the CPU plays a winning move over a defensive one
+
+    # 1. Win
+    # 2. Block
+    # 3. Fork
+    # 4. Block Fork
+    # 5. Center
+    # 6. Opposite Corner
+    # 7. Empty Corner
+    # 8. Empty Side
+
+    # Start with @symbol so the CPU gives priority to Win over Block
     [@symbol, @other_symbol].each do |s|
       # Check for 2 in a row in rows
       @board.each_index do |y|
